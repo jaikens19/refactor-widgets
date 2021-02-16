@@ -1,51 +1,50 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-class Clock extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      time: new Date()
-    };
-  }
+function Clock() {
 
-  componentDidMount() {
-    this.interval = setInterval(this.tick, 1000);
-  }
+  const [time, setTime] = useState(new Date())
 
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
+  
+  useEffect(() => {
+    const tick = () => {
+      setTime(new Date());
+    }
 
-  tick = () => {
-    this.setState({ time: new Date() });
-  }
+    const interval = setInterval(tick, 1000);
+    return () => clearInterval(interval);
+  
 
-  render() {
-    let hours = this.state.time.getHours();
-    let minutes = this.state.time.getMinutes();
-    let seconds = this.state.time.getSeconds();
+  }, [])
 
-    hours = (hours < 10) ? `0${hours}` : hours;
-    minutes = (minutes < 10) ? `0${minutes}` : minutes;
-    seconds = (seconds < 10) ? `0${seconds}` : seconds;
+  
 
-    return (
-      <section>
-        <h1>Clock</h1>
-        <div className='clock'>
-          <p>
-            <span>
-              Time:
+
+  let hours = time.getHours();
+  let minutes = time.getMinutes();
+  let seconds = time.getSeconds();
+
+  hours = (hours < 10) ? `0${hours}` : hours;
+  minutes = (minutes < 10) ? `0${minutes}` : minutes;
+  seconds = (seconds < 10) ? `0${seconds}` : seconds;
+
+  return (
+    <section>
+      <h1>Clock</h1>
+      <div className='clock'>
+        <p>
+          <span>
+            Time:
             </span>
-            <span>
-              {hours}:{minutes}:{seconds} PDT
+          <span>
+            {hours}:{minutes}:{seconds} CST
             </span>
-          </p>
-          <p>Date: {this.state.time.toDateString()}</p>
-        </div>
-      </section>
-    );
-  }
-};
+        </p>
+        <p>Date: {time.toDateString()}</p>
+      </div>
+    </section>
+  )
+
+}
+
 
 export default Clock;
